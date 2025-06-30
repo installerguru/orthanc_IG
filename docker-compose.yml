@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  orthanc:
+    image: jodogne/orthanc-plugins:latest
+    container_name: orthanc
+    ports:
+      - "8042:8042"
+      - "4242:4242"
+    environment:
+      - VERBOSE_ENABLED=true
+    volumes:
+      - ./orthanc.json:/etc/orthanc/orthanc.json
+      - ./authorization.json:/authorization/authorization.json
+      - ./lua:/lua
+      - ./dicom_storage:/var/lib/orthanc/db
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: orthanc
+      MYSQL_USER: orthanc
+      MYSQL_PASSWORD: Orth@nc#S3cure
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
