@@ -1,1 +1,60 @@
+function GetToday()
+  return os.date('%Y%m%d')
+end
 
+function GetYesterday()
+  return os.date('%Y%m%d', os.time() - 86400)
+end
+
+function RetrieveFromModality(modality)
+  local today = GetToday()
+  local yesterday = GetYesterday()
+
+  local query = {
+    ["Level"] = "Study",
+    ["Query"] = {
+      ["StudyDate"] = yesterday .. "-" .. today
+    }
+  }
+
+  print("Running query for modality " .. modality .. " with StudyDate range: " .. yesterday .. " to " .. today)
+
+  local success, result = RestApiPost('/modalities/' .. modality .. '/query', query)
+
+  if success and result['ID'] then
+    local queryId = result['ID']
+    print("Query successful for " .. modality .. ", retrieving studies...")
+
+    local retrieveSuccess = RestApiPost('/queries/' .. queryId .. '/retrieve', {})
+    if retrieveSuccess then
+      print("Auto-retrieve successful from " .. modality)
+    else
+      print("Retrieve failed from " .. modality)
+    end
+  else
+    print("Query failed for modality: " .. modality)
+  end
+end
+
+function OnTimer(timer)
+  local modalities = { "PALI_CT", "SIKAR_CT" }
+
+  for _, modality in ipairs(modalities) do
+    RetrieveFromModality(modality)
+  end
+end
+
+-- Schedule this script to run every 10 minutes
+Timer = Timer or {}
+Timer[1] = {
+  Interval = 600,  -- seconds
+  Callback = OnTimer
+}
+-- Manual trigger via /tools/execute-script
+function OnRestApiPost(uri, body)
+  if uri == '/retrieve-now' then
+    print("📥 Manual retrieve request received.")
+    RetrieveAll()
+    return { ["Status"] = "OK", ["Message"] = "Manual retrieval executed" }
+  end
+end
