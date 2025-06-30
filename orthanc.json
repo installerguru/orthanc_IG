@@ -61,10 +61,10 @@
   "DicomAlwaysAllowMove": false,
   "DicomCheckModalityHost": false,
   "DicomModalities": {
-    "MedsynapsePACS_Soni": ["MEDSYNAPSE", "172.22.22.20", 104],
-    "MedsynapsePACS_SMS": ["MEDSYNAPSE", "192.168.10.38", 104],
-    "PALI_CT": ["ctpali99", "10.10.30.21", 4006],
-    "SIKAR_CT": ["CT_SIKAR", "10.10.32.21", 4006]
+    "PACS1": ["YOURPACS", "10.10.10.1", 104],
+    "PACS2": ["YOURPACS", "10.10.10.2", 104],
+    "PACS3": ["YOURPACS", "10.10.10.3", 4006],
+    "PACS4": ["YOURPACS", "10.10.10.4", 4006]
   },
   "DicomModalitiesInDatabase": false,
   "DicomEchoChecksFind": false,
