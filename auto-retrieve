@@ -37,7 +37,7 @@ function RetrieveFromModality(modality)
 end
 
 function OnTimer(timer)
-  local modalities = { "PALI_CT", "SIKAR_CT" }
+  local modalities = { "PACS1", "PACS1" }
 
   for _, modality in ipairs(modalities) do
     RetrieveFromModality(modality)
