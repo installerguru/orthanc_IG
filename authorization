@@ -1,0 +1,9 @@
+{
+  "default": { "delete": false },
+  "guest": { "delete": false },
+  "technician": { "delete": false },
+  "admin": { "delete": true },
+  "radiologist": { "delete": true },
+  "support": { "delete": true },
+  "ig": { "delete": true }
+}
